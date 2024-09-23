@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main      # Producción
-      - staging   # Staging
-      - develop   # Desarrollo
+      - stage   # Staging
+      - dev   # Desarrollo
 
 jobs:
   build:
