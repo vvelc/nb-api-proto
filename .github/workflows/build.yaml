@@ -26,17 +26,22 @@ jobs:
     - name: Build the TypeScript app
       run: yarn build
 
+    # Remover el prefijo 'refs/heads/' del nombre de la rama
+    - name: Extract branch name
+      id: extract_branch
+      run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
     - name: Build the Docker image
-      run: docker build -t vvelc/nb-api-proto:${{ github.ref }}-latest .
+      run: docker build -t vvelc/nb-api-proto:${{ env.BRANCH_NAME }}-latest .
 
     - name: Log in to DockerHub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Push Docker image
-      run: docker push vvelc/nb-api-proto:${{ github.ref }}-latest
+      run: docker push vvelc/nb-api-proto:${{ env.BRANCH_NAME }}-latest
 
     - name: Tag the Docker image
-      run: docker tag vvelc/nb-api-proto:${{ github.ref }}-latest vvelc/nb-api-proto:${{ github.ref }}-latest
+      run: docker tag vvelc/nb-api-proto:${{ env.BRANCH_NAME }}-latest vvelc/nb-api-proto:${{ env.BRANCH_NAME }}-latest
 
     - name: Push latest tag
-      run: docker push vvelc/nb-api-proto:${{ github.ref }}-latest
+      run: docker push vvelc/nb-api-proto:${{ env.BRANCH_NAME }}-latest
