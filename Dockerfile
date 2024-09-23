@@ -5,7 +5,7 @@ FROM node:16-alpine
 WORKDIR /usr/src/app
 
 # Copia los archivos de dependencia de Yarn
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock tsconfig.json ./
 
 # Instala las dependencias de Yarn
 RUN yarn install
